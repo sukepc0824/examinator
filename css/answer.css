@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+@page {
+    size: B4 landscape;
+    /* 横の場合はlandscape */
+    margin: 0mm;
+}
+
+.answer-preview {
+    height: 100%;
+    display: flex;
+    background-color: #eee;
+    overflow-y: scroll;
+    padding-top: 56px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.answer-preview button.reset {
+    margin: 8px;
+    display: flex;
+    gap: 4px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 5px;
+    align-items: center;
+}
+
+.answer-sheet {
+    flex-shrink: 0;
+    height: 364mm;
+    width: 257mm;
+    position: relative;
+    padding: 8mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10pt;
+    background-color: rgb(255, 255, 255);
+}
+
+.answer-small-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10pt;
+}
+
+.answer-large {
+    display: flex;
+    gap: 5pt;
+}
+
+.answer-preview .number {
+    width: 8mm !important;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    border: 1pt solid black;
+    align-items: center;
+    letter-spacing: 0pt;
+    font-size: 10pt;
+}
+
+.answer-small-content {
+    display: flex;
+    min-width: 80px;
+    min-height: 48px;
+}
+
+.answer-small-content:has(.short-write) {
+    min-width: 180px;
+}
+
+.answer-small-content:has(.long-write) {
+    width: 680px;
+}
+
+.answer-small-content .small-answer {
+    font-size: 16pt;
+    padding: 1.5mm;
+    width: 100%;
+    border: 1pt solid black;
+}
+
+.answer-small-content .small-answer.short-write {
+    display: flex;
+}
+
+p.large-number {
+    width: 24pt;
+    text-align: center;
+    font-size: 14pt;
+    letter-spacing: 0;
+    line-height: 24pt;
+    flex-shrink: 0;
+    height: fit-content;
+    border: 1pt solid black;
+}
+
+.bottom {
+    justify-content: space-between;
+    display: flex;
+}
+
+.name {
+    display: flex;
+}
+
+.name p {
+    padding: 0 4pt;
+    text-align: right;
+    width: 60pt;
+    border-bottom: 1pt solid black;
+}
+
+.score>div {
+    width: 140pt;
+    justify-content: end;
+    border-bottom: 1px solid black;
+    display: flex;
+}
