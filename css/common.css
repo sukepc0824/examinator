@@ -9,6 +9,7 @@ body {
 
 .ql-editor {
     font-family: "Inter", "Noto Sans JP", sans-serif;
+    font-size: 17px;
 }
 
 button {
@@ -161,15 +162,68 @@ button.hoverstyle:hover {
     display: list-item;
 }
 
+[category="select-alphabet"] .outline ol li {
+    display: list-item;
+}
+
 [category="select-katakana"] .ql-editor ol li::before {
     list-style-type: katakana !important;
     content: counter(list-0, katakana) '  ' !important;
 }
 
-.ql-editor:focus {
+[category="select-alphabet"] .ql-editor ol li::before {
+    list-style-type: lower-alpha !important;
+    content: counter(list-0, lower-alpha) '.  ' !important;
+}
+
+.ql-editor:focus,input:focus {
     box-shadow: inset 0 0 0 2px rgba(0, 123, 255, 0.45) !important;
 }
 
 .ql-tooltip {
     left: 0px !important;
+}
+
+.editor-container {
+    border-radius: 8px;
+}
+
+.ql-toolbar.ql-snow {
+    padding: 10px;
+}
+
+.editor-container .ql-toolbar {
+    border-radius: 8px 8px 0px 0px;
+}
+
+.editor-container .ql-container {
+    border-radius: 0 0 8px 8px;
+}
+
+.small-box .ql-container {
+    border-radius: 0;
+}
+
+.small-box .ql-toolbar {
+    border-radius: 4px 4px 0px 0px;
+}
+
+.small-box .answer {
+    border-radius: 0 0 4px 4px;
+}
+
+.small-box .answer .ql-container {
+    border-radius: 0 0 4px 4px;
+}
+
+.formula-editor .ql-editor {
+    width: calc(100% - 52px);
+}
+
+.answer .ql-toolbar  {
+    padding: 0;
+}
+
+.outline .default,.outline .category {
+    text-wrap: nowrap;
 }

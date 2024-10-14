@@ -67,14 +67,7 @@ $(function () {
         return array.reduce((sum, element) => sum + element, 0);
     }
 
-
-    $(".segment button").on("click", function () {
-        $(`body>.answer,body>.exam, body>.exam-preview`).hide()
-        $(`body>.${$(this).val()}`).show()
-
-        $(".segment button").removeClass("active")
-        $(this).addClass("active")
-
+    function answer_set() {
         $(".answer-sheet .container").empty()
 
         editor_data.forEach((parents_value, parent_index) => {
@@ -118,9 +111,9 @@ $(function () {
             $(".category").hide()
         }
 
-        //////////////////////////////////////
-        //////////////////////////////////////
+    }
 
+    function exam_preview_set() {
         $(".exam-large").remove()
         $(".exam-preview h1").text(exam_data.subject)
         $(".exam-preview h2").text(exam_data.title)
@@ -160,6 +153,18 @@ $(function () {
         } else {
             $(".exam-preview p.score").hide()
         }
+    }
+
+
+    $(".segment button").on("click", function () {
+        $(`body>.answer,body>.exam, body>.exam-preview`).hide()
+        $(`body>.${$(this).val()}`).show()
+
+        $(".segment button").removeClass("active")
+        $(this).addClass("active")
+
+        answer_set()
+        exam_preview_set()
     })
 
     ui = {
@@ -459,15 +464,15 @@ $(function () {
                     if (ui.offset.left + ui.helper.width() < 400) {
                         ui.helper.addClass("drop")
                         $(".tab").removeClass("hover")
-                        $(document.elementFromPoint(event.clientX, event.clientY - 27)).addClass("hover")
+                        $(document.elementFromPoint(event.clientX, event.clientY - 10)).addClass("hover")
                     } else {
                         ui.helper.removeClass("drop")
                     }
                 },
                 stop: function (event, ui) {
-                    if ($(document.elementFromPoint(event.clientX, event.clientY - 27)).hasClass("tab")) {
-                        ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY - 27)).data("id")}"] ul.sortable`)
-                        new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY - 24)).data("id")}"]`).index(".tabs-container .tab")).select()
+                    if ($(document.elementFromPoint(event.clientX, event.clientY - 10)).hasClass("tab")) {
+                        ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY - 10)).data("id")}"] ul.sortable`)
+                        new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY - 10)).data("id")}"]`).index(".tabs-container .tab")).select()
                     }
                     ui.item.removeClass("drop");
                     $(".tab").removeClass("hover")
