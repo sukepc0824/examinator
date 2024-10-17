@@ -383,10 +383,11 @@ $(function () {
             this.select = select
         }
         create() {
+            let onetime_UUID = generateUUID()
             let $small = $(
                 `
                 <li>
-                    <div class="small-box">
+                    <div class="small-box" data-id="${onetime_UUID}">
                         <div class="editor-container">
                             <div class="outline" style="display: flex; gap:4px;"></div>
                             <div class="detail">
@@ -572,6 +573,7 @@ $(function () {
         }, 250, "swing", function () {
             $(this).css("height", "auto")
         })
+        
     }
 
     $(document).on("mousedown", function (event) {
@@ -606,8 +608,6 @@ $(function () {
                 html: ""
             }
         }, 0, ui.selecting_large, true).create()
-
-        $('.content').scrollTop($('.content')[0].scrollHeight);
     })
 
     $(document).on("click", ".tab-menu button.delete", function () {
