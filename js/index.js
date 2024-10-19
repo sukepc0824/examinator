@@ -1,4 +1,9 @@
+
 $(function () {
+    window.addEventListener('beforeunload', function (event) {
+        updata_data()
+    });
+
     //起動時
     let editor_data = [];
     let exam_data = {};
@@ -17,8 +22,14 @@ $(function () {
     })
 
     db.exam.get(paramValue).then((exam) => {
+        editor_data = exam.data;
         exam_data = exam.config
-        editor_data = exam.data
+
+        Object.keys(exam_data).forEach(value => {
+            $(`input.toggle[name="${value}"]`).prop('checked', exam_data[value]);
+            $(`input.textbox[name="${value}"]`).val(exam_data[value]);
+        })
+
         $(".segment button[value='exam']").trigger("click")
         editor_data.forEach(function (value, parents_index) {
             new Large_question(value.large_data, parents_index).create()
@@ -28,11 +39,6 @@ $(function () {
         })
 
         new Large_question(undefined, 0).select()
-
-        Object.keys(exam_data).forEach(value => {
-            $(`input.toggle[name="${value}"]`).prop('checked', exam_data[value]);
-            $(`input.textbox[name="${value}"]`).val(exam_data[value]);
-        })
 
         updata_data()
         setTimeout(() => {
@@ -91,10 +97,16 @@ $(function () {
                     height: editor_data[parent_index].small_data[index].answer.height,
                 })
 
+                if (value.answer.limit != 0) {
+                    for (let i = 0; i < value.answer.limit; i++) {
+                        $(`<div class="text-limit-box">${[...(value.answer.html).replace("<p>", "").replace("</p>", "")][i] ? [...(value.answer.html).replace("<p>", "").replace("</p>", "")][i] : ""}</div>`).appendTo($small.find(".small-answer"))
+                    }
+                }
 
                 $(".answer-small-content").resizable({
                     minHeight: 48,
-                    minWidth: 80,
+                    minWidth: 48,
+                    grid: [24, 48],
 
                     stop: function (event, ui) {
                         updata_data()
@@ -209,11 +221,13 @@ $(function () {
                 },
                 category: $(this).find("select").val(),
                 answer: {
+                    limit: Number($(this).find("input.limit").val() ? $(this).find("input.limit").val() : 0),
                     html: $(this).find(".formula-editor .ql-editor").html(),
                     width: $(`.answer-large[data-id="${$(element).parents(".large-box").data("id")}"]`).find(`.answer-small-content[data-id="${$(this).index(".small-box")}"]`).width(),
                     height: $(`.answer-large[data-id="${$(element).parents(".large-box").data("id")}"]`).find(`.answer-small-content[data-id="${$(this).index(".small-box")}"]`).height()
                 }
             })
+
             $(this).attr("category", $(this).find("select").val())
         })
 
@@ -224,15 +238,12 @@ $(function () {
             exam_data[$(this).attr("name")] = $(this).val()
         })
 
-        $(".title h2").text(`${exam_data.title} - ${exam_data.subject}`)
-
-        editor_data = data
-        exam_data = exam_data
-
+        $(".title h2").text(`${exam_data.title} － ${exam_data.subject}`)
         return [data, exam_data]
     }
 
     function updata_data() {
+
         $(".tab-menu").each(function (index) {
             $(this).data("tab-menu-id", index)
         })
@@ -249,8 +260,8 @@ $(function () {
                         <span class="ql-editor">
                             ${$(this).find(".simple-editor .ql-editor").html()}
                             <span class="outline-answer">
-                                <p class="default">(${$(this).find("input.default").val() ? $(this).find("input.default").val() : 0}点) </p>
-                                <p class="category">(知:${$(this).find("input.skill").val()}点 思:${$(this).find("input.expression").val()}点)</p>
+                                <span class="default">${$(this).find("input.default").val() ? $(this).find("input.default").val() : 0}点 － </span>
+                                <span class="category">知:${$(this).find("input.skill").val()}点 思:${$(this).find("input.expression").val()}点 － </span>
                                 ${$(this).find(".answer .ql-editor").html()}
                             </span>
                         </span>
@@ -266,10 +277,14 @@ $(function () {
             $(".category").hide()
             $(".default").show()
         }
+
+        editor_data = get_data()[0]
+        exam_data = get_data()[1]
+
         db.exam.update(paramValue, {
             data: get_data()[0],
+            config: get_data()[1],
             d_date: new Date(),
-            config: get_data()[1]
         });
         //        $(".tab .title .sub").text(`小問:${editor_data[this.index].small_data.length} 配点:${large_sum(this.index)}`)
     }
@@ -375,6 +390,7 @@ $(function () {
             $(`.large-box[data-id="${$(`.tabs-container button.tab`).eq(this.index).data("id")}"]`).find("h2").html(this.index + 1)
         }
     }
+
     class Small_question {
         constructor(small_data, index, parents_index, select) {
             this.data = small_data
@@ -433,7 +449,7 @@ $(function () {
                                     <div class="right">
                                         <label>
                                             文字(単語)数を制限:
-                                            <input type="number" class="textbox letter" placeholder="制限なし" min="10" max="100">
+                                            <input type="number" class="textbox limit" value="${this.data.answer.limit}" placeholder="なし" min="0" max="100">
                                         </label>
                                         <button class="copy hoverstyle" title="複製">
                                             <span class="material-symbols-outlined">
@@ -573,18 +589,16 @@ $(function () {
         }, 250, "swing", function () {
             $(this).css("height", "auto")
         })
-        
+
     }
 
     $(document).on("mousedown", function (event) {
         if (!$(event.target).closest('.small-box').length) {
-            updata_data()
             small_deselect()
         }
     })
 
     $(document).on("click", ".small-box:not(.selection)", function () {
-        updata_data()
         small_deselect()
         small_select($(this))
     })
@@ -656,8 +670,8 @@ $(function () {
     $("button.export").on("click", function () {
         updata_data()
         let blob = new Blob([JSON.stringify({
-            data: exam_data,
-            config: editor_data
+            data: editor_data,
+            config: exam_data
         }, null, '  ')], { type: 'application\/json' });
         location.href = URL.createObjectURL(blob);
     })

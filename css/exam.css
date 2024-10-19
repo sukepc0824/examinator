@@ -10,6 +10,10 @@
     .description {
         display: none;
     }
+
+    .no-print {
+        display: none;
+    }
 }
 
 .exam-preview {
@@ -19,7 +23,6 @@
     align-items: center;
     flex-direction: column;
     background-color: #eee;
-    overflow-y: scroll;
 }
 
 .exam-sheet .description {
@@ -31,6 +34,7 @@
 }
 
 .exam-sheet {
+    page:b5;
     background-color: #eee;
     font-size: 12pt;
     line-height: 1.6;
@@ -87,7 +91,7 @@
     outline: 1pt solid black;
 }
 
-.exam-sheet .exam-large-content>::before {
+.exam-sheet .exam-large-content>:first-child:before {
     content: '';
     display: inline-block;
     width: 26pt;

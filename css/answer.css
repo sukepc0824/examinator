@@ -56,35 +56,35 @@
 }
 
 .answer-preview .number {
-    width: 8mm !important;
+    width: 25px !important;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
-    border: 1pt solid black;
+    outline: 1pt solid black;
     align-items: center;
-    letter-spacing: 0pt;
+    letter-spacing: -.04rem;
     font-size: 10pt;
 }
 
 .answer-small-content {
     display: flex;
-    min-width: 80px;
+    min-width: 72px;
     min-height: 48px;
 }
 
 .answer-small-content:has(.short-write) {
-    min-width: 180px;
+    min-width: 168px;
 }
 
 .answer-small-content:has(.long-write) {
-    width: 680px;
+    width: 672px;
 }
 
 .answer-small-content .small-answer {
     font-size: 16pt;
-    padding: 1.5mm;
     width: 100%;
-    border: 1pt solid black;
+    align-items: center;
+    outline: 1pt solid black;
 }
 
 .answer-small-content .small-answer.short-write {
@@ -99,7 +99,7 @@ p.large-number {
     line-height: 24pt;
     flex-shrink: 0;
     height: fit-content;
-    border: 1pt solid black;
+    outline: 1pt solid black;
 }
 
 .bottom {
@@ -123,4 +123,28 @@ p.large-number {
     justify-content: end;
     border-bottom: 1px solid black;
     display: flex;
+}
+
+.small-answer:has(.text-limit-box) {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    outline: 1px solid #b2b2b2;
+}
+
+.small-answer:has(.text-limit-box) p {
+    display: none;
+}
+
+.small-answer:has(.text-limit-box) .answer-small-content {
+    padding: 0;
+}
+
+.text-limit-box {
+    display: flex;
+    width: 48px !important;
+    align-items: center;
+    justify-content: center;
+    height: 48px !important;
+    outline: 1px dashed rgb(0, 0, 0);
 }
