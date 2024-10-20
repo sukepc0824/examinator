@@ -47,51 +47,62 @@
 
 <body>
     <header class="no-print">
-        <button class="title">
-            <span class="material-symbols-outlined">
-                page_info
-            </span>
-            <h2>取得中...</h2>
-        </button>
-        <div class="webui-popover-content">
-            <div class="property">
-                <div class="input-container">
+        <div class="header-main">
+            <div class=""></div>
+            <button class="title" style="position: absolute; left: 50%; transform: translateX(-50%);">
+                <span class="material-symbols-outlined">
+                    page_info
+                </span>
+                <h2>取得中...</h2>
+            </button>
+            <div class="webui-popover-content">
+                <div class="property">
+                    <div class="input-container">
+                        <label>
+                            模試タイトル:
+                            <input type="text" class="textbox" placeholder="模試タイトル" name="title">
+                        </label>
+                        <label>
+                            教科名:
+                            <input type="text" class="textbox" placeholder="教科名" name="subject">
+                        </label>
+                    </div>
                     <label>
-                        模試タイトル:
-                        <input type="text" class="textbox" placeholder="模試タイトル" name="title">
+                        配点をグループ分け (知識,技能/思考,判断,表現)
+                        <input type="checkbox" class="toggle" name="score_category">
                     </label>
                     <label>
-                        教科名:
-                        <input type="text" class="textbox" placeholder="教科名" name="subject">
+                        問題用紙に大問ごとに配点を表示
+                        <input type="checkbox" class="toggle" name="score_visible">
                     </label>
+                    <label>
+                        問題用紙に表紙を作成
+                        <input type="checkbox" class="toggle" name="exam_cover">
+                    </label>
+                    <textarea class="textbox" placeholder="表紙に記載する注意事項"></textarea>
                 </div>
-                <label>
-                    配点をグループ分け (知識,技能/思考,判断,表現)
-                    <input type="checkbox" class="toggle" name="score_category">
-                </label>
-                <label>
-                    問題用紙に大問ごとに配点を表示
-                    <input type="checkbox" class="toggle" name="score_visible">
-                </label>
-                <label>
-                    問題用紙に表紙を作成
-                    <input type="checkbox" class="toggle" name="exam_cover">
-                </label>
-                <textarea class="textbox" placeholder="表紙に記載する注意事項"></textarea>
+            </div>
+            <div class="action">
+                <button class="export">
+                    <span class="material-symbols-outlined">
+                        download
+                    </span>
+                    <p>エクスポート</p>
+                </button>
+                <button class="save">
+                    <span class="material-symbols-outlined">
+                        save
+                    </span>
+                    <p>ブラウザに保存</p>
+                </button>
             </div>
         </div>
-        <div class="segment">
-            <button value="exam">問題用紙</button>
-            <button value="answer">解答用紙</button>
-            <button value="exam-preview">プレビュー</button>
-        </div>
-        <div class="action">
-            <button class="export">
-                <span class="material-symbols-outlined">
-                    download
-                </span>
-                <p>エクスポート</p>
-            </button>
+        <div class="header-tab">
+            <div class="segment">
+                <button value="exam">問題用紙</button>
+                <button value="answer">解答用紙</button>
+                <button value="exam-preview">プレビュー</button>
+            </div>
         </div>
     </header>
     <div class="answer-preview answer">
@@ -126,15 +137,20 @@
     <main class="exam">
         <div class="sidebar">
             <div class="topbar">
+                <div class="segment">
+                    <button value="large-section">大問構成</button>
+                    <button value="saved-small">保存した小問</button>
+                </div>
+            </div>
+            <div class="tabs-container large-section">
                 <button class="create-large">
                     <span class="material-symbols-outlined">add</span>
                     <p>大問を作成</p>
                 </button>
-            </div>
-            <div class="tabs-container">
                 <ul class="sortable">
                 </ul>
             </div>
+            <div class="saved-small"></div>
         </div>
         <div class="content" data-title="二次関数">
         </div>

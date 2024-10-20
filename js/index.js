@@ -30,7 +30,9 @@ $(function () {
             $(`input.textbox[name="${value}"]`).val(exam_data[value]);
         })
 
-        $(".segment button[value='exam']").trigger("click")
+        $("header .segment button[value='exam']").trigger("click")
+        $(".sidebar .segment button[value='large-section']").trigger("click")
+
         editor_data.forEach(function (value, parents_index) {
             new Large_question(value.large_data, parents_index).create()
             value.small_data.forEach(function (v, i) {
@@ -39,7 +41,6 @@ $(function () {
         })
 
         new Large_question(undefined, 0).select()
-
         updata_data()
         setTimeout(() => {
             $(".loading").fadeOut()
@@ -168,15 +169,23 @@ $(function () {
     }
 
 
-    $(".segment button").on("click", function () {
+    $("header .segment button").on("click", function () {
         $(`body>.answer,body>.exam, body>.exam-preview`).hide()
         $(`body>.${$(this).val()}`).show()
 
-        $(".segment button").removeClass("active")
+        $("header .segment button").removeClass("active")
         $(this).addClass("active")
 
         answer_set()
         exam_preview_set()
+    })
+
+    $(".sidebar .segment button").on("click", function () {
+        $(`.sidebar .large-section`).hide()
+        $(`.${$(this).val()}`).show()
+
+        $(".sidebar .segment button").removeClass("active")
+        $(this).addClass("active")
     })
 
     ui = {
@@ -238,7 +247,10 @@ $(function () {
             exam_data[$(this).attr("name")] = $(this).val()
         })
 
-        $(".title h2").text(`${exam_data.title} － ${exam_data.subject}`)
+        let title = `${exam_data.title} － ${exam_data.subject}`
+        document.title = title
+        $(".title h2").text(title)
+
         return [data, exam_data]
     }
 
@@ -412,9 +424,9 @@ $(function () {
                                     <div class="input">
                                         <div class="score">
                                             点数:
-                                            <input type="number" class="textbox score default" placeholder="0" value="${this.data.score.default}" min="0" max="100">
-                                            <input type="number" class="textbox score category skill" placeholder="知技" value="${this.data.score.skill}" min="0" max="100">
-                                            <input type="number" class="textbox score category expression" placeholder="思判表" value="${this.data.score.expression}" min="0" max="100">
+                                            <input type="number" class="textbox score default" placeholder="0" value="${this.data.score.default != 0 ? this.data.score.default : ""}" min="0" max="100">
+                                            <input type="number" class="textbox score category skill" placeholder="知技" value="${this.data.score.skill ? this.data.score.skill : ""}" min="0" max="100">
+                                            <input type="number" class="textbox score category expression" placeholder="思判表" value="${this.data.score.expression ? this.data.score.expression : ""}" min="0" max="100">
                                         </div>
                                         <label class="selectbox">
                                             <select data-exam-data="category">
@@ -449,7 +461,7 @@ $(function () {
                                     <div class="right">
                                         <label>
                                             文字(単語)数を制限:
-                                            <input type="number" class="textbox limit" value="${this.data.answer.limit}" placeholder="なし" min="0" max="100">
+                                            <input type="number" class="textbox limit" value="${this.data.answer.limit != 0 ? this.data.answer.limit : ''}" placeholder="なし" min="0" max="100">
                                         </label>
                                         <button class="copy hoverstyle" title="複製">
                                             <span class="material-symbols-outlined">

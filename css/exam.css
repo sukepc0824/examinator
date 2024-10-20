@@ -17,7 +17,7 @@
 }
 
 .exam-preview {
-    padding-top: 56px;
+    padding-top: 84px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -34,7 +34,7 @@
 }
 
 .exam-sheet {
-    page:b5;
+    page: b5;
     background-color: #eee;
     font-size: 12pt;
     line-height: 1.6;
