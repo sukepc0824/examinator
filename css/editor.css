@@ -1,0 +1,568 @@
+:root {
+    --primary-color: rgb(0, 122, 253);
+}
+
+
+header {
+    width: 100%;
+    z-index: 100;
+    position: fixed;
+    background-color: #fff;
+    border-bottom: #ddd 1px solid;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 0;
+    height: 86px;
+}
+
+header .action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+header .header-main {
+    padding: 0 18px;
+    height: 52px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .last-edited {
+    color: #777;
+}
+
+body,
+html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+header button.title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+}
+
+header button.back {
+    display: flex;
+    gap: 4px;
+}
+
+header button.title:active {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+header button span {
+    color: #777;
+}
+
+header h2 {
+    font-weight: 500;
+    pointer-events: none;
+    font-size: 18px;
+}
+
+main {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    padding-top: 86px;
+}
+
+main .sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    border-right: #ddd 1px solid;
+    background-color: white;
+}
+
+.sidebar .topbar {
+    width: 100%;
+    height: 38px;
+    border-bottom: #ddd 1px solid;
+    display: flex;
+    align-items: center;
+    display: none;
+    justify-content: start;
+}
+
+.sidebar button.create-large {
+    display: flex;
+    color: var(--primary-color);
+    align-items: center;
+    font-weight: 500;
+    width: 100%;
+    height: 34px;
+    margin-bottom: 4px;
+    padding-left: 14px;
+    gap: 4px;
+}
+
+button.create-large:hover {
+    background-color: #f2f2f2;
+}
+
+.sidebar .tabs-container {
+    padding: 6px;
+}
+
+.sidebar .tabs-container li {
+    position: relative;
+}
+
+.sidebar .tabs-container .large-number {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #777777;
+    font-size: 17px;
+    font-weight: 500;
+    color: #777;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    justify-content: center;
+}
+
+.sidebar .tabs-container .tab {
+    padding: 4px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 4px;
+    width: 100%;
+    position: relative;
+    cursor: default;
+}
+
+.tab.hover {
+    background-color: #ddd !important;
+}
+
+.sidebar .tabs-container .tab .title {
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+    padding: 5px 0;
+}
+
+.sidebar .tabs-container .tab .title .sub {
+    font-size: 14px;
+    color: #777;
+}
+
+.sidebar .tabs-container .tab.selection {
+    background-color: rgb(14, 130, 255, 0.17);
+}
+
+.sidebar .tabs-container button.menu {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    opacity: 0.6;
+}
+
+.tab-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tab-menu .action {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tab-menu label {
+    display: flex;
+    align-items: center;
+    text-wrap: nowrap;
+    gap: 4px;
+}
+
+.tab-menu button {
+    display: flex;
+    padding: 6px 8px;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    align-items: center;
+    gap: 6px;
+    color: #333;
+}
+
+.tab-menu button.delete {
+    color: #d12600;
+}
+
+main .content {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f6f6f6;
+    align-items: center;
+    gap: 16px;
+    overflow-y: scroll;
+}
+
+.content .large-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.property {
+    display: flex;
+    align-items: right;
+    flex-direction: column;
+    gap: 8px;
+    padding: 5px;
+}
+
+.property .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.property .input-container input[type=text] {
+    width: 250px;
+}
+
+.property label:has(input[name="exam_cover"])+textarea {
+    display: none;
+    width: 100%;
+}
+
+.property label:has(input[name="exam_cover"]:checked)+textarea {
+    display: initial;
+}
+
+.property label {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: end;
+}
+
+.content .large-box {
+    max-width: 740px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.content .small-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 740px;
+    width: 100%;
+    gap: 6px;
+}
+
+.content .editor-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 740px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.content .small-container ul {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+}
+
+.content .small-container li {
+    transition: transform 0.4s ease;
+}
+
+.content .small-box {
+    padding: 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    display: flex;
+}
+
+.small-box .outline .ql-editor {
+    white-space: unset;
+}
+
+.small-box .outline .outline-answer {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.small-box .outline .score {
+    color: #777;
+    padding: 0 4px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    text-wrap: nowrap;
+}
+
+.small-box .outline .score p.category {
+    display: flex;
+    align-items: center;
+}
+
+.small-box .outline .score p.category span {
+    font-size: 22px;
+}
+
+li {
+    transform-origin: right center;
+}
+
+li.drop {
+    pointer-events: none;
+    transform: scale(0.26);
+}
+
+.content .small-box li {
+    display: flex;
+}
+
+.content .small-box.selection {
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.content .editor-container #editor {
+    width: 100%;
+    height: fit-content;
+}
+
+#editor p {
+    font-size: 17px;
+}
+
+button.floating {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background-color: #fff;
+    padding: 10px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    border-radius: 6px;
+}
+
+button.floating:hover {
+    color: rgb(0, 100, 208) !important;
+    background-color: #f2f2f2;
+}
+
+.small-box .detail {
+    gap: 12px;
+    flex-direction: column;
+    padding: 10px;
+    display: none;
+}
+
+.small-box .outline-content {
+    display: flex;
+    gap: 5px;
+}
+
+.small-box .outline {
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-box.selection .outline {
+    display: none !important;
+}
+
+.small-box.selection .detail {
+    display: flex;
+}
+
+.small-box.selection .editor {
+    display: flex;
+    flex-direction: column;
+}
+
+.small-box.selection .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.small-box.selection .topbar .input {
+    display: flex;
+    gap: 12px;
+}
+
+.small-box.selection .topbar input.textbox {
+    width: 89px;
+}
+
+.small-box.selection .topbar .score {
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    color: #333;
+    gap: 2px;
+}
+
+.small-box .drag-hundle {
+    display: flex;
+    align-items: center;
+    cursor: grabbing;
+    justify-content: center;
+    user-select: none;
+    color: #777;
+}
+
+.small-box .bottombar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-box input[type=number] {
+    font-size: 17px;
+}
+
+.small-box .limit {
+    width: 90px;
+    height: 2.8rem;
+}
+
+.small-box .bottombar .left,
+.small-box .bottombar .right {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: end;
+}
+
+.small-box .bottombar .left {
+    gap: 6px;
+}
+
+.small-box .bottombar button {
+    min-width: 46px;
+    height: 40px;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.small-container ul:empty::after {
+    content: "小問が追加されていません";
+    text-align: center;
+    color: #777;
+}
+
+.outline-answer {
+    color: #d12600;
+    display: flex;
+}
+
+.outline-answer:empty {
+    display: none;
+}
+
+.action button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    min-width: 76px;
+    justify-content: center;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0px 1px 1px rgba(144, 144, 144, 0.2);
+}
+
+.action button span {
+    opacity: 0.9;
+}
+
+.action button.save {
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid rgb(0, 98, 203);
+    box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.segment {
+    display: flex;
+    font-size: 15px;
+    border-radius: 4px;
+    width: 100%;
+    padding: 0 6px;
+    height: 100%;
+}
+
+.segment button {
+    border-bottom: rgba(255, 255, 255, 0) 2px solid;
+}
+
+header .segment button {
+    min-width: 120px;
+    padding: 5px 20px;
+}
+
+.segment button.active {
+    color: var(--primary-color);
+    border-bottom: var(--primary-color) 2px solid;
+}
+
+.sidebar .segment button {
+    width: 50%;
+    padding: 4px;
+}
+
+.multi-answer {}
+
+.mfrac {
+    font-size: 20pt;
+}
+
+.answer-item {
+    gap: 4px;
+    display: flex;
+}
+
+.small-box .number {
+    display: none;
+}
+
+.small-box .label.answer_limit {
+    display: inherit;
+}
+
+.small-box.multiple-answer .number {
+    display: inherit;
+}
+
+.small-box.multiple-answer .label.answer_limit {
+    display: none;
+}

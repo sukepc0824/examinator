@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+JP:wght@100..900&display=swap');
+
+html,
+body {
+    font-family: "Inter", "Noto Sans JP", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+
+.block-modal {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+    .block-modal {
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #f1f1f1;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        color: #555;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .block-modal span {
+        font-size: 80px;
+    }
+}
+
+@media print {
+    .description {
+        display: none !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .answer-preview {
+        padding-top: 0 !important;
+    }
+}
+
+
+.ql-editor {
+    font-family: "Inter", "Noto Sans JP", sans-serif;
+    font-size: 17px;
+}
+
+button {
+    color: #333;
+}
+
+.selectbox {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.selectbox::after {
+    position: absolute;
+    right: 15px;
+    width: 10px;
+    height: 7px;
+    background-color: #535353;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    content: '';
+    pointer-events: none;
+}
+
+.selectbox select {
+    appearance: none;
+    min-width: 230px;
+    height: 2.8em;
+    padding: .4em calc(.8em + 30px) .4em .8em;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #333333;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.textbox {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    color: #333;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.textbox::placeholder {
+    color: #999;
+}
+
+.textarea {
+    border-radius: 3px;
+    color: #333;
+    font-size: 1em;
+    height: fit-content;
+}
+
+.textarea .simple-editor,
+.formula-editor {
+    font-size: 17px;
+    height: fit-content;
+    width: 100%;
+    position: relative;
+}
+
+.small-box .answer p.number {
+    width: 20px;
+    height: 20px;
+    margin: 6px;
+    font-size: 20px;
+    line-height: 18px;
+}
+
+.small-box .answer {
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: #ffe6e6;
+}
+
+.answer .ql-toolbar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    border: none;
+    z-index: 1000;
+}
+
+
+.multiple-answer .answer .ql-toolbar {
+    right: 38px;
+}
+
+.answer .delete {
+    display: none;
+}
+
+.multiple-answer .answer .delete {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    border: none;
+    z-index: 1000;
+    width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer .delete span {
+    font-size: 22px;
+}
+
+ol {
+    padding: 0 !important;
+    margin: .5rem 0;
+}
+
+.exam-preview ol {
+    margin-left: 1.6rem;
+}
+
+.ql-tooltip[data-mode='formula'] {
+    z-index: 1000000;
+}
+
+.mathquill4quill-mathquill-input {
+    font-size: 1.5rem;
+}
+
+input[type=checkbox].toggle {
+    --size: 24px;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    display: inline-block;
+    width: calc(var(--size)*1.62);
+    height: var(--size);
+    border-radius: calc(var(--size)*.5);
+    vertical-align: middle;
+    background-color: #999;
+    transition: .1s;
+}
+
+input[type=checkbox].toggle::before {
+    content: "";
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    transform: scale(.85);
+    background-color: #fff;
+    transition: inherit;
+}
+
+input[type=checkbox]:checked.toggle {
+    background-color: rgb(14, 130, 255);
+}
+
+input[type=checkbox]:checked.toggle::before {
+    transform: translateX(calc(var(--size)*.62))scale(.85);
+}
+
+button.hoverstyle:hover {
+    background-color: #00000010;
+    border-radius: 5px;
+    filter: brightness(89%);
+}
+
+.sidebar li {
+    list-style: none;
+}
+
+.ql-editor p {
+    font-size: 17px;
+}
+
+.outline .ql-editor {
+    height: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+[category="select-katakana"] .outline ol li {
+    display: list-item;
+}
+
+[category="select-alphabet"] .outline ol li {
+    display: list-item;
+}
+
+[category="select-katakana"] .ql-editor ol li::before {
+    list-style-type: katakana !important;
+    content: counter(list-0, katakana) '  ' !important;
+}
+
+[category="select-alphabet"] .ql-editor ol li::before {
+    list-style-type: lower-alpha !important;
+    content: counter(list-0, lower-alpha) '.  ' !important;
+}
+
+.ql-editor:focus,
+input:focus {
+    box-shadow: inset 0 0 0 2px rgba(0, 123, 255, 0.45) !important;
+}
+
+.ql-tooltip {
+    left: 0px !important;
+}
+
+.editor-container {
+    border-radius: 8px;
+}
+
+.ql-toolbar.ql-snow {
+    padding: 10px;
+}
+
+.editor-container .ql-toolbar {
+    border-radius: 8px 8px 0px 0px;
+}
+
+.editor-container .ql-container {
+    border-radius: 0 0 8px 8px;
+}
+
+.small-box .ql-container {
+    border-radius: 0;
+}
+
+.small-box .ql-toolbar {
+    border-radius: 4px 4px 0px 0px;
+}
+
+.small-box .answer {
+    border-radius: 0 0 4px 4px;
+}
+
+.small-box .answer .ql-container {
+    border-radius: 0 0 4px 4px;
+}
+
+.formula-editor .ql-editor {
+    width: calc(100% - 42px);
+}
+
+.multiple-answer .formula-editor .ql-editor {
+    width: calc(100% - 88px);
+}
+
+.answer .ql-toolbar {
+    padding: 0;
+}
+
+.outline .default,
+.outline .category {
+    text-wrap: nowrap;
+}

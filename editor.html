@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模試作成</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.core.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.snow.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.bubble.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@edtr-io/mathquill@0.11.0/build/mathquill.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link rel="stylesheet" href="css/mathquill4quill.css">
+    <link rel="stylesheet" href="css/jquery.webui-popover.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/answer.css">
+    <link rel="stylesheet" href="css/exam.css">
+    <link rel="stylesheet" href="css/loader.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.0/themes/base/jquery-ui.min.css" />
+
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.loadtemplate/1.5.10/jquery.loadTemplate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.min.js"></script>
+    <script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-placeholder-module@0.3.1/dist/placeholder-module.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@edtr-io/mathquill@0.11.0/build/mathquill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"></script>
+    <script src="https://unpkg.com/quill-image-compress@1.2.11/dist/quill.imageCompressor.min.js"></script>
+    <script src="js/mathquill4quill.js"></script>
+
+    <script src="js/uuid.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/jquery.webui-popover.js"></script>
+</head>
+
+<body>
+    <div class="block-modal">
+        <span class="material-symbols-outlined">
+            laptop_mac
+        </span>
+        <p>Examinatorを使用するには<br>画面横幅900px以上が必要です</p>
+    </div>
+    <header class="no-print">
+        <div class="header-main">
+            <button class="back" onclick="location.href= './index.html'">
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+                <p>トップへ戻る</p>
+            </button>
+            <button class="title" style="position: absolute; left: 50%; transform: translateX(-50%);">
+                <span class="material-symbols-outlined">
+                    page_info
+                </span>
+                <h2>取得中...</h2>
+            </button>
+            <div class="webui-popover-content">
+                <div class="property">
+                    <div class="input-container">
+                        <label>
+                            模試タイトル:
+                            <input type="text" class="textbox" placeholder="模試タイトル" name="title">
+                        </label>
+                        <label>
+                            教科名:
+                            <input type="text" class="textbox" placeholder="教科名" name="subject">
+                        </label>
+                    </div>
+                    <label>
+                        配点をグループ分け (知識,技能/思考,判断,表現)
+                        <input type="checkbox" class="toggle" name="score_category">
+                    </label>
+                    <label>
+                        問題用紙に大問ごとに配点を表示
+                        <input type="checkbox" class="toggle" name="score_visible">
+                    </label>
+                    <label>
+                        問題用紙に表紙を作成
+                        <input type="checkbox" class="toggle" name="exam_cover">
+                    </label>
+                    <textarea class="textbox" placeholder="表紙に記載する注意事項"></textarea>
+                </div>
+            </div>
+            <div class="action">
+                <button class="export">
+                    <p>出力</p>
+                </button>
+            </div>
+        </div>
+        <div class="header-tab">
+            <div class="segment">
+                <button value="exam">問題用紙</button>
+                <button value="answer">解答用紙</button>
+                <button value="exam-preview">プレビュー</button>
+            </div>
+        </div>
+    </header>
+    <div class="answer-preview answer">
+        <button class="reset no-print">
+            <span class="material-symbols-outlined">
+                refresh
+            </span>
+            <p>レイアウトをリセット</p>
+        </button>
+        <div class="answer-sheet">
+            <div class="container">
+                <p class="title" style="font-weight: 500;"></p>
+                <script type="text/html" class="answer-large_templete">
+                    <div class="answer-large page" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                        <p class="large-number" data-content="number"></p>
+                        <div class="answer-small-container">
+                        </div>
+                    </div>
+                </script>
+                <script type="text/html" class="answer-small_templete">
+                    <div class="answer-small" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                        <div class="number" data-content="number"></div>
+                        <div class="answer-frame-container" data-class="category"></div>
+                    </div>
+                </script>
+                <script type="text/html" class="answer-frame_templete">
+                    <div class="answer-frame">
+                        <div class="number" data-content="number"></div>
+                        <div class="answer-frame-answer" data-content="answer_html"></div>
+                    </div>
+                </script>
+            </div>
+            <div class="bottom">
+                <div class="name">
+                    <p>組</p>
+                    <p>番</p>
+                    <p style="width: 200pt; text-align: left;">名前</p>
+                </div>
+                <div class="category skill">
+                    <div>知識・技能</div>
+                    <div class="sum"></div>
+                </div>
+                <div class="category expression">
+                    <div>思考・判断・表現</div>
+                    <div class="sum"></div>
+                </div>
+                <div class="score">
+                    <div>/取得中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="exam">
+        <div class="sidebar">
+            <div class="topbar">
+                <div class="segment">
+                    <button value="large-section">大問構成</button>
+                    <button value="saved-small">保存した小問</button>
+                </div>
+            </div>
+            <div class="tabs-container large-section">
+                <button class="create-large">
+                    <span class="material-symbols-outlined">add</span>
+                    <p>大問を作成</p>
+                </button>
+                <ul class="sortable">
+                    <script type="text/html" class="tab_template">
+                        <li>
+                            <button class="tab drag-hundle" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                                <div class="large-number" data-content="number"></div>
+                                <div class="title">
+                                    <p class="main" data-content="title"></p>
+                                    <p class="sub" data-content="sum"></p>
+                                </div>
+                                <button class="menu">
+                                    <span class="material-symbols-outlined">
+                                        more_vert
+                                    </span>
+                                </button>
+                                <div class="webui-popover-content">
+                                    <div class="tab-menu" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                                        <label>
+                                            タイトル:
+                                            <input type="text" class="textbox" placeholder="小問集合,単元名など" data-value="title">
+                                        </label>
+                                        <div class="action">
+                                            <button class="delete">
+                                                <span class="material-symbols-outlined">
+                                                    delete
+                                                </span>
+                                                <p>削除</p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </li>
+                    </script>
+                </ul>
+            </div>
+            <div class="saved-small"></div>
+        </div>
+        <div class="content">
+            <script type="text/html" class="large-box_template">
+                <div class="large-box" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                    <h2 data-content="number"></h2>
+                    <div class="editor-container">
+                        <div class="large-editor"></div>
+                    </div>
+                    <div class="small-container">
+                        <ul class="sortable"></ul>
+                    </div>
+                </div>
+            </script>
+            <script type="text/html" class="small-box_template">
+                <li>
+                    <div class="small-box" data-template-bind='{"attribute": "data-id", "value": "UUID"}'>
+                        <div class="editor-container">
+                            <div class="outline" style="display: flex; gap:4px;">
+                                <div class="outline-content">
+                                    <div class="small-number"></div>
+                                    <div class="ql-editor">
+                                        <div class="outline-editor-content"></div>
+                                        <div class="outline-answer">
+                                            <span class="default">
+                                                <span class="default-score"></span>点 －
+                                            </span>
+                                            <span class="category">
+                                                知:<span class="skill-score"></span>点
+                                                思:<span class="expression-score"></span>点 －
+                                            </span>
+                                            <span class="outline-answer-content"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail">
+                                <div class="topbar">
+                                    <div class="small-number" data-content="number"></div>
+                                    <div class="input">
+                                        <div class="score">
+                                            点数:
+                                            <input type="number" class="textbox score default" placeholder="0" data-value="default" min="0" max="100">
+                                            <input type="number" class="textbox score category skill" placeholder="知技" data-value="skill" min="0" max="100">
+                                            <input type="number" class="textbox score category expression" placeholder="思判表" data-value="expression" min="0" max="100">
+                                        </div>
+                                        <label class="selectbox">
+                                            <select data-exam-data="category">
+                                                <option value="short-write">短文記述</option>
+                                                <option value="long-write">長文記述</option>
+                                                <hr/>
+                                                <option value="select-katakana">選択式 - カタカナ</option>
+                                                <option value="select-number">選択式 - 数字</option>
+                                                <option value="select-alphabet">選択式 - アルファベット</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="editor">
+                                    <div class="textarea">
+                                        <div class="simple-editor"></div>
+                                    </div>
+                                </div>
+                                <div class="bottombar">
+                                    <div class="left">
+                                        <button class="add-answer hoverstyle">
+                                           <span class="material-symbols-outlined">
+                                                add
+                                            </span>
+                                            <p>解答を追加</p>
+                                        </button>
+                                    </div>
+                                    <div class="right">
+                                        <label class="answer_limit">
+                                            文字(単語)数を制限:
+                                            <input type="number" class="textbox limit" data-value="answer_limit" placeholder="なし" min="0" max="100">
+                                        </label>
+                                        <button class="copy hoverstyle" title="複製">
+                                            <span class="material-symbols-outlined">
+                                                content_copy
+                                            </span>
+                                        </button>
+                                        <button class="delete hoverstyle" title="削除">
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drag-hundle">
+                            <span class="material-symbols-outlined">
+                                drag_indicator
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </script>
+            <script type="text/html" class="answer_templete">
+                <div class="answer">
+                    <p class="number"></p>
+                    <div class="formula-editor" data-content="data"></div>
+                    <button class="delete">
+                        <span class="material-symbols-outlined">
+                            delete 
+                        </span>
+                    </button>
+                </div>
+            </script>
+        </div>
+        <button class="floating create-small">
+            <span class="material-symbols-outlined">add</span>
+            <p>小問を作成</p>
+        </button>
+    </main>
+    <div class="exam-preview">
+        <div class="exam-sheet">
+            <div class="exam">
+                <div class="page cover">
+                    <h1></h1>
+                    <h2></h2>
+                    <p>最初に問題冊子全体を確認し、不備があれば試験監督に申し出ること。回答は回答用紙に丁寧に記入すること。採点者が判別できない場合は不正解とする。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading"
+        style="position: fixed; width: 100%; height: 100%; background-color: rgb(232, 232, 232); z-index: 10000; display: flex; align-items: center; justify-content: center; font-size: 25px; gap: 4px; flex-direction: column;">
+        <img src="img/Spinner@1x-1.3s-200px-200px-3.gif" alt="" width="240">
+    </div>
+</body>
+
+</html>
