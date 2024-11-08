@@ -266,9 +266,10 @@ $(function () {
                     .find("p.main")
                     .text($element.find("input").val().length ?
                         $element.find("input").val() : "名称未設定")
-                updata_data()
                 answer_set()
                 exam_preview_set()
+                config_refresh()
+                updata_data()
             }
         });
     }
@@ -616,7 +617,7 @@ $(function () {
             })
             this.$small.find(".outline-editor-content").html(this.$small.find(".simple-editor .ql-editor").html())
             this.$small.find(".outline-answer-content").html(answer_list.join(""))
-            
+
             this.$small.find(".score-category").html(this.$small.find(".score_category").val() === 'skill' ? "知技" : "思判表")
             this.$small.find(".default-score").html(this.$small.find("input.score").val() ? this.$small.find("input.score").val() : 0)
 
@@ -732,7 +733,7 @@ $(function () {
     }
 
     $(document).on("mousedown", function (event) {
-        if (!$(event.target).closest('.small-box').length && $("button[value='exam']").hasClass('active')) {
+        if (!$(event.target).closest('.small-box').length && $("button[value='exam']").hasClass('active') && $(".small-box.selection").length) {
             Small_question.deselect()
         }
     })
