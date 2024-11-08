@@ -117,12 +117,11 @@
 
             db.version(1).stores({
                 exam: `
-                    id,
-                    data,
-                    config,
-                    d_date`,
-            })
-
+id,
+data,
+config,
+d_date`,
+            });
             function new_exam() {
                 db.exam.put({
                     id: generateShortID(),
@@ -158,25 +157,22 @@
 
             function get_exam() {
                 $(".container .list-wrapper").remove()
-
                 db.exam
                     .orderBy('d_date')
                     .reverse()
-                    .toArray()
-                    .then(function (exam) {
+                    .each(function (exam) {
                         console.log(exam)
-                        exam.forEach(element => {
-                            $(`
+                        $(`
                             <div class="list-wrapper">
-                            <button class="list" onclick="location.href ='editor.html?id=${element.id}'" data-id="${element.id}">
-                                <div class="name">${element.config.title.length ? elemen.config.title : '名称未設定'} － ${element.config.subject.length ? element.config.subject : '教科未設定'}</div>
+                            <button class="list" onclick="location.href ='editor.html?id=${exam.id}'" data-id="${exam.id}">
+                                <div class="name">${exam.config.title.length ? elemen.config.title : '名称未設定'} － ${exam.config.subject.length ? exam.config.subject : '教科未設定'}</div>
                                 <div class="right">
                                     <div class="date">
-                                        ${element.d_date.toLocaleDateString('ja-JP')}
-                                        ${element.d_date.toLocaleTimeString('ja-JP', { hour12: false, timeStyle: "short" })}
+                                        ${exam.d_date.toLocaleDateString('ja-JP')}
+                                        ${exam.d_date.toLocaleTimeString('ja-JP', { hour12: false, timeStyle: "short" })}
                                     </div>
                                     <div class="id">
-                                        ${element.id}
+                                        ${exam.id}
                                     </div>
                                 </div>
                             </button>
@@ -186,7 +182,6 @@
                                 </span>    
                             </button>
                             </div>`).appendTo(".container")
-                        });
                     });
             }
             get_exam()
