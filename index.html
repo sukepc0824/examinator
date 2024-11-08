@@ -157,14 +157,15 @@
             })
 
             function get_exam() {
-               //$(".container .list-wrapper").remove()
+                $(".container .list-wrapper").remove()
+
                 db.exam
                     .orderBy('d_date')
                     .reverse()
                     .toArray()
                     .then(function (exam) {
+                        console.log(exam)
                         exam.forEach(element => {
-                            console.log(element)
                             $(`
                             <div class="list-wrapper">
                             <button class="list" onclick="location.href ='editor.html?id=${element.id}'" data-id="${element.id}">
