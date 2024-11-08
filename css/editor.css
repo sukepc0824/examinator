@@ -566,3 +566,25 @@ header .segment button {
 .small-box.multiple-answer .label.answer_limit {
     display: none;
 }
+
+.second-action {
+    display: flex;
+    justify-content: space-between;
+    min-width: 940px;
+}
+
+.second-action .right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.second-action button {
+    margin: 8px;
+    display: flex;
+    gap: 4px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 5px;
+    align-items: center;
+}

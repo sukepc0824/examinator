@@ -24,6 +24,7 @@ $(function () {
         Object.keys(config).forEach(value => {
             $(`input.toggle[name="${value}"]`).prop('checked', config[value]);
             $(`input.textbox[name="${value}"]`).val(config[value]);
+            $(`textarea[name="${value}"]`).val(config[value]);
         })
 
         answer_set()
@@ -77,6 +78,7 @@ $(function () {
     function setPageSize(cssPageSize) {
         const style = document.createElement('style');
         style.innerHTML = `@page {size: ${cssPageSize}}`;
+
         document.head.appendChild(style);
     }
 
@@ -158,9 +160,9 @@ $(function () {
                 }
 
                 $(".answer-frame").resizable({
-                    minHeight: 48,
-                    minWidth: 48,
-                    grid: [24, 48],
+                    minHeight: 42,
+                    minWidth: 42,
+                    grid: [21, 42],
 
                     stop: function (event, ui) {
                         updata_data()
@@ -183,8 +185,9 @@ $(function () {
 
     function exam_preview_set() {
         $(".exam-large").remove()
-        $(".exam-preview h1").text(config.subject)
-        $(".exam-preview h2").text(config.title)
+        $(".exam-preview h1").text(config.subject.length ? config.subject : "未設定")
+        $(".exam-preview h2").text(config.title.length ? config.title : "名称未設定")
+        $(".exam-preview .cover p").text(config.cover_text)
 
         editor_data.forEach((parents_value, parent_index) => {
             let $large = $(`
@@ -264,6 +267,8 @@ $(function () {
                     .text($element.find("input").val().length ?
                         $element.find("input").val() : "名称未設定")
                 updata_data()
+                answer_set()
+                exam_preview_set()
             }
         });
     }
@@ -271,6 +276,17 @@ $(function () {
     function get_data() {
         let data = [];
         let config = {};
+
+        $(".property input.toggle").each(function () {
+            config[$(this).attr("name")] = $(this).prop("checked")
+        })
+        $(".property input.textbox").each(function () {
+            config[$(this).attr("name")] = $(this).val()
+        })
+        $(".property textarea").each(function () {
+            config[$(this).attr("name")] = $(this).val()
+            console.log($(this).val())
+        })
 
         $(".large-box").each(function (parent_index, parent_element) {
             data.push({
@@ -286,13 +302,19 @@ $(function () {
                     UUID: $(this).attr("data-id"),
                     html: $(element).find(".simple-editor .ql-editor").html(),
                     score: {
-                        default: Number($(this).find("input.score.default").val()),
-                        skill: Number($(this).find("input.score.skill").val()),
-                        expression: Number($(this).find("input.score.expression").val())
+                        default: 0,
+                        skill: 0,
+                        expression: 0
                     },
-                    category: $(this).find("select").val(),
+                    category: $(this).find(".select-category").val(),
                     answer: []
                 })
+
+                if (config.score_category) {
+                    data[parent_index].small_data[index].score[$(this).find(".score_category").val()] = Number($(this).find("input.score").val())
+                } else {
+                    data[parent_index].small_data[index].score.default = Number($(this).find("input.score").val())
+                }
 
                 $(element).find(".formula-editor").each(function (answer_index) {
                     data[parent_index].small_data[index].answer.push({
@@ -303,20 +325,10 @@ $(function () {
                     })
                 })
 
-                $(this).attr("category", $(this).find("select").val())
+                $(this).attr("category", $(this).find(".select-category").val())
             })
         })
 
-        $(".property input.toggle").each(function () {
-            config[$(this).attr("name")] = $(this).prop("checked")
-        })
-        $(".property input.textbox").each(function () {
-            config[$(this).attr("name")] = $(this).val()
-        })
-
-        let title = `${config.title.length ? config.title : '名称未設定'} － ${config.subject.length ? config.subject : '未設定'}`
-        document.title = title
-        $(".title h2").text(title)
         return [data, config]
     }
 
@@ -334,7 +346,10 @@ $(function () {
             $(".category").hide()
             $(".default").show()
         }
-        exam_preview_set()
+
+        let title = `${config.title.length ? config.title : '名称未設定'} － ${config.subject.length ? config.subject : '未設定'}`
+        document.title = title
+        $(".title h2").text(title)
     }
 
     function updata_data() {
@@ -385,6 +400,18 @@ $(function () {
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
             enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\cfrac{x}{y}", "\\cfrac"]] })
+            quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+                let ops = []
+                delta.ops.forEach(op => {
+                    if (op.insert && typeof op.insert === 'string') {
+                        ops.push({
+                            insert: op.insert
+                        })
+                    }
+                })
+                delta.ops = ops
+                return delta
+            })
 
             $(".tabs-container ul").loadTemplate($(".tab_template"), {
                 UUID: UUID,
@@ -408,7 +435,6 @@ $(function () {
                         $(`.large-box[data-id="${$(this).data("id")}"]`).appendTo(".content")
                     })
                     Large_question.refresh()
-                    updata_data()
                 },
             })
 
@@ -459,9 +485,7 @@ $(function () {
             $(`.large-box`).eq(this.index).find("ul").loadTemplate($(".small-box_template"), {
                 UUID: UUID,
                 number: String(this.index + 1),
-                default: data.score.default != 0 ? data.score.default : "",
-                skill: data.score.skill ? data.score.skill : "",
-                expression: data.score.expression ? data.score.expression : "",
+                default: data.score.default + data.score.skill + data.score.expression != 0 ? data.score.default + data.score.skill + data.score.expression : "",
                 answer_limit: data.answer[0].limit != 0 ? data.answer[0].limit : ''
             }, {
                 append: true
@@ -469,7 +493,11 @@ $(function () {
 
             let $small = $(`.small-box[data-id="${UUID}"]`)
 
-            $small.find(`.selectbox select option[value="${data.category}"]`).prop("selected", true)
+            if (config.score_category) {
+                $small.find(`.selectbox .score_category option[value="${data.score.expression == 0 ? 'skill' : 'expression'}"]`).prop("selected", true)
+            }
+
+            $small.find(`.selectbox .select-category option[value="${data.category}"]`).prop("selected", true)
 
             if (data.answer.length) {
                 data.answer.forEach((value, index) => {
@@ -484,10 +512,6 @@ $(function () {
             $small.parents(".sortable").sortable({
                 cancel: '',
                 handle: '.drag-hundle',
-                update: function () {
-                    Large_question.refresh()
-                    updata_data()
-                },
                 sort: function (event, ui) {
                     if (ui.offset.left + ui.helper.width() < 400) {
                         ui.helper.addClass("drop")
@@ -501,12 +525,11 @@ $(function () {
                     if ($(document.elementFromPoint(event.clientX, event.clientY)).hasClass("tab")) {
                         ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"] ul.sortable`)
                         new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"]`).index(".tabs-container .tab")).select()
+                        $(".sortable").sortable("refresh");
+                        Large_question.refresh()
                     }
                     ui.item.removeClass("drop");
                     $(".tab").removeClass("hover")
-
-                    Large_question.refresh()
-                    updata_data()
                 }
             })
 
@@ -523,8 +546,7 @@ $(function () {
             })
 
             //点数更新
-            $small.on("blur", "input.score", function () {
-                updata_data()
+            $small.on("change", "input.score", function () {
                 Large_question.refresh()
             })
 
@@ -534,12 +556,13 @@ $(function () {
             })
 
             //smallの複製
+            /*
             $small.on("click", ".bottombar button.copy", function () {
                 $clone = $(this).parents("li").clone().appendTo($(this).parents(".small-container ul"))
                 Small_question.deselect()
                 Small_question.select($(this).data("id"))
                 updata_data()
-            })
+            })*/
 
             let quill = new Quill($small.find(".simple-editor")[0], {
                 theme: "snow",
@@ -557,7 +580,18 @@ $(function () {
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
             enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\frac{x}{y}", "\\frac"]] })
-
+            quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+                let ops = []
+                delta.ops.forEach(op => {
+                    if (op.insert && typeof op.insert === 'string') {
+                        ops.push({
+                            insert: op.insert
+                        })
+                    }
+                })
+                delta.ops = ops
+                return delta
+            })
             Large_question.refresh()
             new Small_question(UUID).refresh()
 
@@ -582,10 +616,9 @@ $(function () {
             })
             this.$small.find(".outline-editor-content").html(this.$small.find(".simple-editor .ql-editor").html())
             this.$small.find(".outline-answer-content").html(answer_list.join(""))
-
-            this.$small.find(".default-score").html(this.$small.find("input.default").val() ? this.$small.find("input.default").val() : 0)
-            this.$small.find(".skill-score").html(this.$small.find("input.skill").val() ? this.$small.find("input.skill").val() : 0)
-            this.$small.find(".expression-score").html(this.$small.find("input.expression").val() ? this.$small.find("input.expression").val() : 0)
+            
+            this.$small.find(".score-category").html(this.$small.find(".score_category").val() === 'skill' ? "知技" : "思判表")
+            this.$small.find(".default-score").html(this.$small.find("input.score").val() ? this.$small.find("input.score").val() : 0)
 
             updata_data()
             config_refresh()
@@ -641,7 +674,6 @@ $(function () {
         remove() {
             this.$small.parents("li").remove()
             Large_question.refresh()
-            updata_data()
         }
 
         append_answer(data) {
@@ -667,6 +699,18 @@ $(function () {
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
             enableMathQuillFormulaAuthoring(answer_quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\cfrac{x}{y}", "\\cfrac"]] })
+            answer_quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+                let ops = []
+                delta.ops.forEach(op => {
+                    if (op.insert && typeof op.insert === 'string') {
+                        ops.push({
+                            insert: op.insert
+                        })
+                    }
+                })
+                delta.ops = ops
+                return delta
+            })
         }
 
         remove_answer(index) {
@@ -688,7 +732,7 @@ $(function () {
     }
 
     $(document).on("mousedown", function (event) {
-        if (!$(event.target).closest('.small-box').length) {
+        if (!$(event.target).closest('.small-box').length && $("button[value='exam']").hasClass('active')) {
             Small_question.deselect()
         }
     })
@@ -719,7 +763,11 @@ $(function () {
     $(".create-small").on("click", function () {
         let data = {
             html: `<br>`,
-            score: "",
+            score: {
+                default: 0,
+                skill: 0,
+                expression: 0
+            },
             category: "",
             answer: [{ html: '', limit: '', width: '', height: '' }]
         }
@@ -732,6 +780,14 @@ $(function () {
     $(".answer-preview button.reset").on("click", function () {
         $(".answer-preview .answer-frame").removeAttr("style")
         updata_data()
+    })
+
+    $(".hide-answer").on("click", function () {
+        if ($(this).prop("checked")) {
+            $(".answer-frame-answer").hide()
+        } else {
+            $(".answer-frame-answer").show()
+        }
     })
 
     $("button.export").on("click", function () {

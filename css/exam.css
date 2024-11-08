@@ -2,6 +2,11 @@
 
 @page {
     margin: 6mm;
+
+    @bottom-left {
+        content: counter(page);
+    }
+
 }
 
 .exam-preview {
@@ -114,17 +119,4 @@
 
 .exam-sheet .exam-small-content .number {
     font-variant-numeric: tabular-nums;
-}
-
-body {
-    counter-reset: sheet;
-    /* カウンタの初期化 */
-}
-
-.exam-preview .page:not(:first-child)::after {
-    position: absolute;
-    top: 10mm;
-    right: 10mm;
-    counter-increment: sheet;
-    content: counter(sheet);
 }

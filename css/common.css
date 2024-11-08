@@ -79,9 +79,9 @@ button {
 
 .selectbox select {
     appearance: none;
-    min-width: 230px;
+    max-width: 300px;
     height: 2.8em;
-    padding: .4em calc(.8em + 30px) .4em .8em;
+    padding: .4em calc(.8em + 20px) .4em .8em;
     border: 1px solid #d0d0d0;
     border-radius: 3px;
     background-color: #fff;
@@ -314,4 +314,8 @@ input:focus {
 .outline .default,
 .outline .category {
     text-wrap: nowrap;
+}
+
+.ql-editor {
+    line-height: 1.6 !important;
 }
