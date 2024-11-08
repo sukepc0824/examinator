@@ -266,10 +266,11 @@ $(function () {
                     .find("p.main")
                     .text($element.find("input").val().length ?
                         $element.find("input").val() : "名称未設定")
+                        
+                updata_data()
                 answer_set()
                 exam_preview_set()
                 config_refresh()
-                updata_data()
             }
         });
     }
