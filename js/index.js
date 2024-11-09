@@ -143,7 +143,6 @@ $(function () {
                         answer_html: answer_value.html,
                     }, { append: true })
 
-                    console.log(editor_data[parent_index].small_data[index].answer[answer_index].width)
                     $small.find(".answer-frame").eq(answer_index).css({
                         width: editor_data[parent_index].small_data[index].answer[answer_index].width,
                         height: editor_data[parent_index].small_data[index].answer[answer_index].height,
@@ -161,8 +160,6 @@ $(function () {
                 }
 
                 $(".answer-frame").resizable({
-                    minHeight: 42,
-                    minWidth: 42,
                     grid: [21, 42],
                 })
             })
@@ -230,6 +227,7 @@ $(function () {
         $(`body>.answer,body>.exam, body>.exam-preview`).hide()
         $(`body>.${$(this).val()}`).show()
 
+        updata_data()
         $("header .segment button").removeClass("active")
         $(this).addClass("active")
         if ($(this).val() === "exam-preview") {
@@ -237,8 +235,6 @@ $(function () {
         } else if ($(this).val() === "answer") {
             answer_set()
         }
-
-        updata_data()
     })
 
     $(".sidebar .segment button").on("click", function () {

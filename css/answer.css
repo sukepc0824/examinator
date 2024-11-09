@@ -63,8 +63,9 @@
 
 .answer-frame {
     min-width: 63px;
+    box-sizing: border-box;
     min-height: 42px;
-    height: fit-content;
+    overflow: hidden;
 }
 
 .answer-small:has(.short-write) .answer-frame {
@@ -73,6 +74,7 @@
 
 .answer-small:has(.long-write) .answer-frame {
     width: 672px;
+    font-size: 17px;
 }
 
 .answer-small .answer-frame-container {
