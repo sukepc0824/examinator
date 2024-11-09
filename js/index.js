@@ -618,10 +618,11 @@ $(function () {
                 answer_list.push(
                     `<div class="answer-item">
                         <p class="number">${toCircled(index + 1)}</p>
-                        ${$(this).html()}
+                        ${$(this).html() != '<p><br></p>' ? $(this).html() : '解答未設定'}
                     </div>`)
+                console.log($(this).html())
             })
-            this.$small.find(".outline-editor-content").html(this.$small.find(".simple-editor .ql-editor").html())
+            this.$small.find(".outline-editor-content").html(this.$small.find(".simple-editor .ql-editor").html() != '<p><br></p>' ? this.$small.find(".simple-editor .ql-editor").html() : "小問未設定")
             this.$small.find(".outline-answer-content").html(answer_list.join(""))
 
             this.$small.find(".score-category").html(this.$small.find(".score_category").val() === 'skill' ? "知技" : "思判表")

@@ -302,11 +302,30 @@ main .content {
 
 .small-box .outline .ql-editor {
     white-space: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.small-box .outline-score {
+    font-size: 14px;
+    text-wrap: nowrap;
+    padding-right: 4px;
+}
+
+.small-box .outline-answer-content {
+    background-color: #ffeeee;
+    padding: 4px 12px;
+    border-radius: 6px;
 }
 
 .small-box .outline .outline-answer {
     display: flex;
+    justify-content: space-between;
+    align-items: end;
     gap: 0.4rem;
+    width: 100%;
 }
 
 .small-box .outline .score {
@@ -386,6 +405,7 @@ button.floating:hover {
 .small-box .outline-content {
     display: flex;
     gap: 5px;
+    width: 100%;
 }
 
 .small-box .outline {
