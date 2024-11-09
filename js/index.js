@@ -83,14 +83,15 @@ $(function () {
     }
 
     function large_sum(index) {
+        let sum_array = []
         if (editor_data[index] === undefined) {
             return 0;
         } else {
-            if (config.score_category) {
-                return editor_data[index].small_data.map(obj => obj.score.skill).reduce((sum, element) => sum + element, 0) + editor_data[index].small_data.map(obj => obj.score.expression).reduce((sum, element) => sum + element, 0)
-            } else {
-                return editor_data[index].small_data.map(obj => obj.score.default).reduce((sum, element) => sum + element, 0)
-            }
+            editor_data[index].small_data.forEach((element, index) => {
+                console.log(element.answer.length)
+                sum_array.push(Number(element.score.default) * element.answer.length + Number(element.score.skill) * element.answer.length + Number(element.score.expression) * element.answer.length)
+            })
+            return sum_array.reduce((sum, element) => sum + element, 0)
         }
     }
 
@@ -202,7 +203,7 @@ $(function () {
 
             parents_value.small_data.forEach((value, index) => {
                 $(`
-                    <div class="exam-small-content">
+                    <div class="exam-small-content ${value.category}">
                         <div class="number">(${index + 1})</div>
                         <div>${value.html}</div>
                     </div>
@@ -266,7 +267,7 @@ $(function () {
                     .find("p.main")
                     .text($element.find("input").val().length ?
                         $element.find("input").val() : "名称未設定")
-                        
+
                 updata_data()
                 answer_set()
                 exam_preview_set()
@@ -528,10 +529,10 @@ $(function () {
                         ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"] ul.sortable`)
                         new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"]`).index(".tabs-container .tab")).select()
                         $(".sortable").sortable("refresh");
-                        Large_question.refresh()
                     }
                     ui.item.removeClass("drop");
                     $(".tab").removeClass("hover")
+                    Large_question.refresh()
                 }
             })
 
@@ -555,6 +556,10 @@ $(function () {
             //answerの追加
             $small.on("click", "button.add-answer", function () {
                 new Small_question($(this).parents(".small-box").data("id")).append_answer('')
+            })
+
+            $small.on("change", "select.select-category", function () {
+                new Small_question(UUID).refresh()
             })
 
             //smallの複製
@@ -620,6 +625,7 @@ $(function () {
             this.$small.find(".outline-answer-content").html(answer_list.join(""))
 
             this.$small.find(".score-category").html(this.$small.find(".score_category").val() === 'skill' ? "知技" : "思判表")
+            this.$small.find(".each-score").html(this.$small.find(".editor .answer").length > 1 ? '各' : '')
             this.$small.find(".default-score").html(this.$small.find("input.score").val() ? this.$small.find("input.score").val() : 0)
 
             updata_data()
@@ -713,11 +719,13 @@ $(function () {
                 delta.ops = ops
                 return delta
             })
+            Large_question.refresh()
         }
 
         remove_answer(index) {
             this.$small.find(".editor .answer").eq(index).remove()
             this.answer_refresh()
+            Large_question.refresh()
         }
 
         answer_refresh() {
@@ -730,6 +738,7 @@ $(function () {
             } else {
                 this.$small.removeClass("multiple-answer")
             }
+            Large_question.refresh()
         }
     }
 

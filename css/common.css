@@ -175,7 +175,7 @@ ol {
 }
 
 .exam-preview ol {
-    margin-left: 1.6rem;
+    margin-left: .4rem;
 }
 
 .ql-tooltip[data-mode='formula'] {
@@ -240,6 +240,16 @@ button.hoverstyle:hover {
     flex-direction: column;
 }
 
+ol {
+    list-style: none;
+    counter-reset: listnum;
+}
+
+ol li::before {
+    counter-increment: listnum;
+    content: counter(listnum) '. ';
+}
+
 [category="select-katakana"] .outline ol li {
     display: list-item;
 }
@@ -256,6 +266,26 @@ button.hoverstyle:hover {
 [category="select-alphabet"] .ql-editor ol li::before {
     list-style-type: lower-alpha !important;
     content: counter(list-0, lower-alpha) '.  ' !important;
+}
+
+.select-katakana ol {
+    list-style: none;
+    counter-reset: listkatakana;
+}
+
+.select-katakana ol li::before {
+    counter-increment: listkatakana;
+    content: counter(listkatakana, katakana) ' ' !important;
+}
+
+.select-alphabet ol {
+    list-style: none;
+    counter-reset: listalpha;
+}
+
+.select-alphabet ol li::before {
+    counter-increment: listalpha;
+    content: counter(listalpha, lower-alpha) '. ' !important;
 }
 
 .ql-editor:focus,
