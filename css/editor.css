@@ -567,7 +567,7 @@ header .segment button {
     font-size: 20pt;
 }
 
-.answer-item {
+.multiple-answer .answer-item {
     gap: 4px;
     display: flex;
 }
