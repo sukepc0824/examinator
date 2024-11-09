@@ -804,10 +804,16 @@ $(function () {
 
     $("button.export").on("click", function () {
         updata_data()
-        let blob = new Blob([JSON.stringify({
+
+        var resultJson = JSON.stringify({
             data: editor_data,
             config: config
-        }, null, '  ')], { type: 'application\/json' });
-        location.href = URL.createObjectURL(blob);
+        });
+        var downLoadLink = document.createElement("a");
+        downLoadLink.download = config.title + '_result.json';
+        downLoadLink.href = URL.createObjectURL(new Blob([resultJson], { type: "text.plain" }));
+        downLoadLink.dataset.downloadurl = ["text/plain", downLoadLink.download, downLoadLink.href].join(":");
+        downLoadLink.click();
     })
+
 })
