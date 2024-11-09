@@ -213,6 +213,7 @@ main .content {
     align-items: center;
     gap: 16px;
     overflow-y: scroll;
+    padding-bottom: 140px;
 }
 
 .content .large-box {

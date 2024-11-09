@@ -785,6 +785,7 @@ $(function () {
         }
         let id = new Large_question(undefined, ui.selecting_large).append_small(data)
         new Small_question(id).select()
+        $('.content').scrollTop($('.content')[0].scrollHeight);
     })
 
     $("button.save").on("click", updata_data())
