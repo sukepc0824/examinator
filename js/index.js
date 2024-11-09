@@ -164,10 +164,6 @@ $(function () {
                     minHeight: 42,
                     minWidth: 42,
                     grid: [21, 42],
-
-                    stop: function (event, ui) {
-                        updata_data()
-                    }
                 })
             })
         })
@@ -356,9 +352,6 @@ $(function () {
     }
 
     function updata_data() {
-        $(".tab-menu").each(function (index) {
-            $(this).data("tab-menu-id", index)
-        })
 
         editor_data = get_data()[0]
         config = get_data()[1]
@@ -629,7 +622,6 @@ $(function () {
             this.$small.find(".each-score").html(this.$small.find(".editor .answer").length > 1 ? '各' : '')
             this.$small.find(".default-score").html(this.$small.find("input.score").val() ? this.$small.find("input.score").val() : 0)
 
-            updata_data()
             config_refresh()
         }
 
