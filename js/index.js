@@ -391,7 +391,7 @@ $(function () {
             quill.root.innerHTML = this.data.html
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
-            enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\cfrac{x}{y}", "\\cfrac"]] })
+            enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\sqrt"], ["\\cfrac{x}{y}", "\\cfrac"], ["_n C_r", "_n C_r"]] })
             quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
                 let ops = []
                 delta.ops.forEach(op => {
@@ -575,7 +575,7 @@ $(function () {
             quill.root.innerHTML = data.html
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
-            enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\frac{x}{y}", "\\frac"]] })
+            enableMathQuillFormulaAuthoring(quill, { operators: [["\\sqrt{x}", "\\sqrt"], ["\\cfrac{x}{y}", "\\cfrac"], ["_n C_r", "_n C_r"]] })
             quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
                 let ops = []
                 delta.ops.forEach(op => {
@@ -695,7 +695,7 @@ $(function () {
             this.remove_answer()
 
             const enableMathQuillFormulaAuthoring = mathquill4quill();
-            enableMathQuillFormulaAuthoring(answer_quill, { operators: [["\\sqrt{x}", "\\nthroot"], ["\\cfrac{x}{y}", "\\cfrac"]] })
+            enableMathQuillFormulaAuthoring(answer_quill, { operators: [["\\sqrt{x}", "\\sqrt"], ["\\cfrac{x}{y}", "\\cfrac"], ["_n C_r", "_n C_r"]] })
             answer_quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
                 let ops = []
                 delta.ops.forEach(op => {
