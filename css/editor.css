@@ -2,6 +2,10 @@
     --primary-color: rgb(0, 122, 253);
 }
 
+body {
+    background: #eee;
+}
+
 
 header {
     width: 100%;
