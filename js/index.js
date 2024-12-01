@@ -35,6 +35,7 @@ $(function () {
                 new Large_question(undefined, parents_index).append_small(v)
             })
         })
+        console.log(exam_category_sum("skill"))
 
         new Large_question(undefined, 0).select()
 
@@ -88,8 +89,27 @@ $(function () {
             return 0;
         } else {
             editor_data[index].small_data.forEach((element, index) => {
-                console.log(element.answer.length)
                 sum_array.push(Number(element.score.default) * element.answer.length + Number(element.score.skill) * element.answer.length + Number(element.score.expression) * element.answer.length)
+            })
+            return sum_array.reduce((sum, element) => sum + element, 0)
+        }
+    }
+
+    function exam_category_sum(category) {
+        let array = []
+        editor_data.forEach(function (e, i) {
+            array.push(category_sum(i, category))
+        })
+        return array.reduce((sum, element) => sum + element, 0);
+    }
+
+    function category_sum(index, category) {
+        let sum_array = []
+        if (editor_data[index] === undefined) {
+            return 0;
+        } else {
+            editor_data[index].small_data.forEach((element, index) => {
+                sum_array.push(Number(element.score[category]) * element.answer.length)
             })
             return sum_array.reduce((sum, element) => sum + element, 0)
         }
@@ -166,6 +186,8 @@ $(function () {
         })
 
         $(".score div").text("/" + exam_sum())
+        $(".category.skill .sum").text(exam_category_sum("skill")+"点")
+        $(".category.expression .sum").text(exam_category_sum("expression")+"点")
 
         if (config.score_category) {
             $(".category").show()
