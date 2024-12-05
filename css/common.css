@@ -349,3 +349,7 @@ input:focus {
 .ql-editor {
     line-height: 1.6 !important;
 }
+
+.number {
+    user-select: none;
+}

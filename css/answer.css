@@ -54,11 +54,11 @@
     align-items: center;
     letter-spacing: -.04rem;
     font-size: 10pt;
-    height: 100%;
 }
 
 .answer-small {
     display: flex;
+    height: fit-content;
 }
 
 .answer-frame {
@@ -81,7 +81,7 @@
     font-size: 16pt;
     flex-wrap: wrap;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     display: flex;
 }
 

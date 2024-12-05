@@ -444,11 +444,12 @@ $(function () {
             $(".tabs-container .sortable").sortable({
                 cancel: '',
                 distance: 10,
-                update: function () {
+                update: function (event,ui) {
                     $(".tabs-container .tab").each(function () {
                         $(`.large-box[data-id="${$(this).data("id")}"]`).appendTo(".content")
                     })
                     Large_question.refresh()
+                    new Large_question(undefined,$(".tab").index(ui.item.find(".tab")))
                 },
             })
 
@@ -472,9 +473,10 @@ $(function () {
             $(".large-box").each(function (parents_index) {
                 $(".tabs-container .tab").eq(parents_index).find(".large-number").text(parents_index + 1)
                 $(this).find("h2").text(parents_index + 1)
+                
+                $(this).data("id", parents_index)
                 $(".tab .title .sub").eq(parents_index).html(`配点:${large_sum(parents_index)}`)
 
-                $(this).data("id", parents_index)
                 $(this).find(".small-box").each(function (index) {
                     $(this).find(".small-number").text("(" + (index + 1) + ")")
                 })
