@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>模試作成アプリ</title>
+    <title>Examinator</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
@@ -103,35 +103,45 @@
         button.remove:hover {
             background-color: #fff1f1;
         }
+
+        input[type='file'] {
+            display: none;
+        }
+
+        .title img {
+            width: 100px;
+            border: 1px solid #aaa;
+            border-radius: 25px;
+            margin: 10px;
+        }
     </style>
 </head>
 
 <body>
     <main>
         <div class="title">
-            <h1>Examinator(ベータ)</h1>
+            <img src="img/icon.png" alt="Examinatorのアイコン">
+            <h1>Examinator</h1>
             <p>効率的にテストを作成しよう</p>
         </div>
         <div class="container">
             <div class="action">
                 <button class="new">＋ 新規作成</button>
-                <!--
-                                <button class="load">-> テストデータをインポート...</button>
-                                            <input type="file" accept=".json" id="filedata" onchange="readjson()">
-                -->
+                <button class="load">-> インポート...</button>
+                <input type="file" accept=".json" id="filedata" onchange="readjson()">
             </div>
         </div>
     </main>
     <script>
+        db = new Dexie("exam_db");
         $(function () {
-            var db = new Dexie("exam_db");
 
             db.version(1).stores({
                 exam: `
-id,
-data,
-config,
-d_date`,
+                    id,
+                    data,
+                    config,
+                    d_date`,
             });
             function new_exam() {
                 db.exam.put({
@@ -166,14 +176,20 @@ d_date`,
                 }
             })
 
-            function get_exam() {
-                $(".container .list-wrapper").remove()
-                db.exam
-                    .orderBy('d_date')
-                    .reverse()
-                    .each(function (exam) {
-                        console.log(exam)
-                        $(`
+            document.querySelector("button.load").addEventListener("click", () => {
+                document.querySelector("input#filedata").click();
+            });
+            get_exam()
+        })
+
+        function get_exam() {
+            $(".container .list-wrapper").remove()
+            db.exam
+                .orderBy('d_date')
+                .reverse()
+                .each(function (exam) {
+                    console.log(exam)
+                    $(`
                             <div class="list-wrapper">
                             <button class="list" onclick="location.href ='editor.html?id=${exam.id}'" data-id="${exam.id}">
                                 <div class="name">${exam.config.title.length ? exam.config.title : '名称未設定'} － ${exam.config.subject.length ? exam.config.subject : '教科未設定'}</div>
@@ -193,30 +209,26 @@ d_date`,
                                 </span>    
                             </button>
                             </div>`).appendTo(".container")
-                    });
-            }
-            /*
-                        function readjson() {
-            
-                            const file = document.getElementById("filedata").files[0];
-                            const reader = new FileReader();
-            
-                            reader.readAsText(file);
-                            //ファイルが読み込まれた時発動。中身をjson形式で読みこむ
-                            reader.onload = (event) => {
-            
-                                const data = JSON.parse(event.target.result);
-            
-                            };
-            
-            
-                        }
-            
-                        document.querySelector("button.load").addEventListener("click", () => {
-                            document.querySelector("input#filedata").click();
-                        });*/
-            get_exam()
-        })
+                });
+        }
+
+        function readjson() {
+
+            const file = document.getElementById("filedata").files[0];
+            const reader = new FileReader();
+
+            reader.readAsText(file);
+            reader.onload = (event) => {
+
+                let data = JSON.parse(event.target.result);
+                data.id = generateShortID()
+                data.d_date = new Date()
+                db.exam.put(data)
+                get_exam()
+            };
+
+
+        }
     </script>
 </body>
 

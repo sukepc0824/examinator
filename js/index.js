@@ -7,7 +7,6 @@ $(function () {
     let config = {};
 
     let db = new Dexie("exam_db");
-
     db.version(1).stores({
         exam: `
         id,
@@ -17,6 +16,7 @@ $(function () {
 
     const paramValue = new URLSearchParams(window.location.search).get('id');
     db.exam.get(paramValue).then((exam) => {
+
         //起動してデータベースが読み込まれた時の処理
         editor_data = exam.data;
         config = exam.config
@@ -35,7 +35,6 @@ $(function () {
                 new Large_question(undefined, parents_index).append_small(v)
             })
         })
-        console.log(exam_category_sum("skill"))
 
         new Large_question(undefined, 0).select()
 
@@ -302,7 +301,6 @@ $(function () {
         })
         $(".property textarea").each(function () {
             config[$(this).attr("name")] = $(this).val()
-            console.log($(this).val())
         })
 
         $(".large-box").each(function (parent_index, parent_element) {
@@ -379,7 +377,6 @@ $(function () {
             config: get_data()[1],
             d_date: new Date(),
         });
-        //        $(".tab .title .sub").text(`小問:${editor_data[this.index].small_data.length} 配点:${large_sum(this.index)}`)
     }
 
     class Large_question {
@@ -633,7 +630,6 @@ $(function () {
                         <p class="number">${toCircled(index + 1)}</p>
                         ${$(this).html() != '<p><br></p>' ? $(this).html() : '解答未設定'}
                     </div>`)
-                console.log($(this).html())
             })
             this.$small.find(".outline-editor-content").html(this.$small.find(".simple-editor .ql-editor").html() != '<p><br></p>' ? this.$small.find(".simple-editor .ql-editor").html() : "小問未設定")
             this.$small.find(".outline-answer-content").html(answer_list.join(""))
