@@ -76,7 +76,7 @@ $(function () {
     }
 
     function setSortable(){
-        $(".sortable").sortable({
+        $(".small-container .sortable").sortable({
             cancel: '',
             handle: '.drag-hundle',
             sort: function (event, ui) {
