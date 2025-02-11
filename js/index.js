@@ -75,6 +75,32 @@ $(function () {
         }
     }
 
+    function setSortable(){
+        $(".sortable").sortable({
+            cancel: '',
+            handle: '.drag-hundle',
+            sort: function (event, ui) {
+                if (ui.offset.left + ui.helper.width() < 400) {
+                    ui.helper.addClass("drop")
+                    $(".tab").removeClass("hover")
+                    $(document.elementFromPoint(event.clientX, event.clientY)).addClass("hover")
+                } else {
+                    ui.helper.removeClass("drop")
+                }
+            },
+            stop: function (event, ui) {
+                if ($(document.elementFromPoint(event.clientX, event.clientY)).hasClass("tab")) {
+                    ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"] ul.sortable`)
+                    new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"]`).index(".tabs-container .tab")).select()
+                    setSortable()
+                }
+                ui.item.removeClass("drop");
+                $(".tab").removeClass("hover")
+                Large_question.refresh()
+            }
+        })
+    }
+
     function setPageSize(cssPageSize) {
         const style = document.createElement('style');
         style.innerHTML = `@page {size: ${cssPageSize}}`;
@@ -521,30 +547,7 @@ $(function () {
             }
 
             new Small_question(UUID).refresh()
-
-            $small.parents(".sortable").sortable({
-                cancel: '',
-                handle: '.drag-hundle',
-                sort: function (event, ui) {
-                    if (ui.offset.left + ui.helper.width() < 400) {
-                        ui.helper.addClass("drop")
-                        $(".tab").removeClass("hover")
-                        $(document.elementFromPoint(event.clientX, event.clientY)).addClass("hover")
-                    } else {
-                        ui.helper.removeClass("drop")
-                    }
-                },
-                stop: function (event, ui) {
-                    if ($(document.elementFromPoint(event.clientX, event.clientY)).hasClass("tab")) {
-                        ui.item.appendTo(`.large-box[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"] ul.sortable`)
-                        new Large_question(undefined, $(`.tab[data-id="${$(document.elementFromPoint(event.clientX, event.clientY)).data("id")}"]`).index(".tabs-container .tab")).select()
-                        $(".sortable").sortable("refresh");
-                    }
-                    ui.item.removeClass("drop");
-                    $(".tab").removeClass("hover")
-                    Large_question.refresh()
-                }
-            })
+            setSortable()
 
             //answerの削除
             $small.on("click", ".answer button.delete", function () {
